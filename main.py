@@ -94,13 +94,13 @@ class Video(Resource):
 
 class Categories(Resource):
     def get(self, name, chat_id):
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.chat_id == int(chat_id)).first()
         if name == 'm' or name == 'f':
             if user.sex == 'male':
                 name = 'm' + name
             else:
                 name = 'f' + name
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.chat_id == int(chat_id)).first()
         cat = db_sess.query(Category).filter(Category.name == name).first().forms_id
         if len(cat) == 2:
             cat = []
